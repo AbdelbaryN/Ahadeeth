@@ -7,7 +7,8 @@ exports.LoginPage = class LoginPage{
         this.passField = page.getByLabel('كلمة السر')
         this.loginBtn = page.getByRole('button', {name: 'تسجيل الدخول'})
         this.welcome = page.getByRole('heading', { name: 'أهلا بكم في المنصة الحديثية' });
-        this.errorEmailMessage = page.getByText('اسم المستخدم أو كلمة المرور غير صحيحة');
+        this.errorFieldMessage = page.getByText('اسم المستخدم أو كلمة المرور غير صحيحة');
+        this.requiredFieldMsg = page.getByText('حقل مطلوب');
     }
 
     async gotoLogin(){
@@ -22,8 +23,14 @@ exports.LoginPage = class LoginPage{
     async VerifyWelcomeMessage(){
         expect(this.welcome).toBeTruthy();
     }
-    async VerifyWrongEmailError(){
-        //await page.waitForLoadState('domcontentloaded');
-        expect(this.errorEmailMessage).toContainText('اسم المستخدم أو كلمة المرور غير صحيحة');
+
+    async VerifyWrongInputError(){
+        this.errorFieldMessage.waitFor();
+        expect(this.errorFieldMessage).toContainText('اسم المستخدم أو كلمة المرور غير صحيحة');
+    }
+
+    async VerifyEmptyFieldError(){
+        this.requiredFieldMsg.waitFor();
+        expect(this.requiredFieldMsg).toContainText('حقل مطلوب');
     }
 }
