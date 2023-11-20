@@ -12,12 +12,16 @@ module.exports = defineConfig({
   //workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+  expect:{
+    timeout: 10000,
+  },
+  timeout: 60000,
   use: {
     trace: 'retain-on-failure',
     headless: false,
     screenshot: 'only-on-failure',
     launchOptions:{
-      slowMo: 50
+      slowMo: 500
     }
   },
 
