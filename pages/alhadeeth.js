@@ -76,9 +76,12 @@ exports.Ahadeeth = class Ahadeeth {
         let extractedNumberFromMatchedAhadeeth;
         let extractedNumberFromBukarii;
         let extractedNumberFromMuslim;
-        const match = textAfterExtraction.match(/\d+/);
-        const match1 = BukariiAfterExtraction.match(/\d+/);
-        const match2 = muslimTextAfterExtraction.match(/\d+/);
+        const textWithoutCommas = textAfterExtraction.replace(/,/g, '');
+        const bukariiTextWithoutCommas = BukariiAfterExtraction.replace(/,/g, '');
+        const muslimTextWithoutCommas = muslimTextAfterExtraction.replace(/,/g, '');
+        const match = textWithoutCommas.match(/\d+/);
+        const match1 = bukariiTextWithoutCommas.match(/\d+/);
+        const match2 = muslimTextWithoutCommas.match(/\d+/);
         if (match, match1, match2) {
             // Extracted number as a string
             const extractedNumberString = match[0];

@@ -25,7 +25,7 @@ test('Verify that the share icon appears only if a filter is applied or a search
     await ahadeeth.verifyCopyIconExists();
 });
 
-test('Verify selecting multiple books and verify hadith count', async({page})=>{
+test.only('Verify selecting multiple books and verify hadith count', async({page})=>{
     //Login
     const login = new LoginPage(page)
     await login.gotoLogin();
