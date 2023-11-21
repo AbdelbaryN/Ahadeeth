@@ -7,6 +7,7 @@ exports.LoginPage = class LoginPage{
         this.passField = page.getByLabel('كلمة السر')
         this.loginBtn = page.getByRole('button', {name: 'تسجيل الدخول'})
         this.welcome = page.getByRole('heading', { name: 'أهلا بكم في المنصة الحديثية' });
+        this.cancelIcon = page.getByTestId('CancelIcon');
         this.errorFieldMessage = page.getByText('اسم المستخدم أو كلمة المرور غير صحيحة');
         this.requiredFieldMsg = page.getByText('حقل مطلوب');
     }
@@ -22,6 +23,7 @@ exports.LoginPage = class LoginPage{
     }
     async VerifyWelcomeMessage(){
         expect(this.welcome).toBeTruthy();
+        await this.cancelIcon.click();
     }
 
     async VerifyWrongInputError(){

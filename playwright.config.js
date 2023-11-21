@@ -20,9 +20,10 @@ module.exports = defineConfig({
     trace: 'retain-on-failure',
     headless: false,
     screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
     launchOptions:{
       slowMo: 500
-    }
+    },
   },
 
   /* Configure projects for major browsers */
