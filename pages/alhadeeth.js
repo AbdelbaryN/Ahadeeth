@@ -15,6 +15,12 @@ exports.Ahadeeth = class Ahadeeth {
         this.noOfsahihMuslim = page.locator('[id="__next"]').getByText('(5,367)');
         this.copyLinkIcon = page.locator('.MuiBox-root > button').first();
         this.linkedCopiedSuccessMsg = page.locator('[id="__next"]').getByRole('alert');
+        this.AbuHoriraCheckbox = page.locator('[id="__next"] span').filter({ hasText: 'أبو هريرة الدوسي(4,440)' }).getByRole('checkbox');
+        this.MohamedAlzuhriiCheckbox = page.locator('[id="__next"] span').filter({ hasText: 'محمد بن شهاب الزهري(886)' }).getByRole('checkbox');
+        this.AbuHoriraSelector = '#__next > div > div.MuiBox-root.muirtl-oe05iq > div > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-9.muirtl-1xd5sck > div > div.MuiBox-root.muirtl-pridvr > div:nth-child(3) > div:nth-child(2) > div.MuiBox-root.muirtl-j0jsvd > p > span.MuiTypography-root.MuiTypography-body1.muirtl-1ztrtr';
+        this.AlzuhriiSelector = '#__next > div > div.MuiBox-root.muirtl-oe05iq > div > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-9.muirtl-1xd5sck > div > div.MuiBox-root.muirtl-pridvr > div:nth-child(3) > div:nth-child(2) > div.MuiBox-root.muirtl-j0jsvd > p > span.MuiTypography-root.MuiTypography-body1.muirtl-e31te7';
+        this.searchWithHadithNumbertxt = page.getByRole('textbox', { name: '0' });
+        this.hadithNum = page.locator('[id="__next"]');
     }
 
     async verifyNumberOfMatchedResultCount() {
@@ -59,7 +65,7 @@ exports.Ahadeeth = class Ahadeeth {
         }
     }
 
-    async verifyCopyIconExists(){
+    async verifyCopyIconExists() {
         await this.sahihAlbukhariiCheckbox.check();
         await this.copyLinkIcon.click();
         this.linkedCopiedSuccessMsg.waitFor();
@@ -109,5 +115,43 @@ exports.Ahadeeth = class Ahadeeth {
             console.log("failed")
         }
 
+    }
+
+
+    async getElementColor(selector) {
+        return await this.page.evaluate((selector) => {
+          const element = document.querySelector(selector);
+          const computedStyle = getComputedStyle(element);
+          return computedStyle.color;
+        }, selector);
+      }
+
+
+    async VerifyDifferentNarratorColors() {
+        await this.AbuHoriraCheckbox.check();
+        await this.MohamedAlzuhriiCheckbox.check();
+
+        const abuHorira = await this.getElementColor(this.AbuHoriraSelector);
+
+        const Alzuhrii = await this.getElementColor(this.AlzuhriiSelector);
+
+        // Compare the colors of the two elements
+        if (abuHorira !== Alzuhrii) {
+            console.log('First Color is ', abuHorira);
+            console.log('Second Color is ', Alzuhrii);
+            console.log('The colors are different.');
+        } else {
+            console.log('First Color is ', abuHorira);
+            console.log('Second Color is ', Alzuhrii);
+            console.log('The colors are the same.');
+        }
+
+
+    }
+
+    async VerifyHadithNumber(){
+        await this.searchWithHadithNumbertxt.fill('7031');
+        await this.searchWithHadithNumbertxt.press('Enter');
+        expect(this.hadithNum).toContainText('7031');
     }
 }
