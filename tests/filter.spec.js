@@ -58,3 +58,14 @@ test('Verify searching the hadith by its number', async({page})=>{
     const ahadeeth = new Ahadeeth(page)
     await ahadeeth.VerifyHadithNumber();
 });
+
+test.only('Verify filtering by narrator(Search for narrator)', async({page})=>{
+    //Login
+    const login = new LoginPage(page)
+    await login.gotoLogin();
+    await login.Login('abdo1991466@gmail.com', '2cQ0@I9W~G%£');
+    await login.VerifyWelcomeMessage();
+    //Verify searching the hadith by its number
+    const ahadeeth = new Ahadeeth(page)
+    await ahadeeth.SearchForNarrator("زينب بنت جحش");
+});

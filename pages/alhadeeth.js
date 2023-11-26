@@ -17,10 +17,13 @@ exports.Ahadeeth = class Ahadeeth {
         this.linkedCopiedSuccessMsg = page.locator('[id="__next"]').getByRole('alert');
         this.AbuHoriraCheckbox = page.locator('[id="__next"] span').filter({ hasText: 'أبو هريرة الدوسي(4,440)' }).getByRole('checkbox');
         this.MohamedAlzuhriiCheckbox = page.locator('[id="__next"] span').filter({ hasText: 'محمد بن شهاب الزهري(886)' }).getByRole('checkbox');
-        this.AbuHoriraSelector = '#__next > div > div.MuiBox-root.muirtl-oe05iq > div > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-9.muirtl-1xd5sck > div > div.MuiBox-root.muirtl-pridvr > div:nth-child(3) > div:nth-child(2) > div.MuiBox-root.muirtl-j0jsvd > p > span.MuiTypography-root.MuiTypography-body1.muirtl-1ztrtr';
-        this.AlzuhriiSelector = '#__next > div > div.MuiBox-root.muirtl-oe05iq > div > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-9.muirtl-1xd5sck > div > div.MuiBox-root.muirtl-pridvr > div:nth-child(3) > div:nth-child(2) > div.MuiBox-root.muirtl-j0jsvd > p > span.MuiTypography-root.MuiTypography-body1.muirtl-e31te7';
+        this.AbuHoriraSelector = '#__next > div > div.MuiBox-root.muirtl-14g4az8 > div > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-9.muirtl-1xd5sck > div > div.MuiBox-root.muirtl-pridvr > div:nth-child(3) > div:nth-child(3) > div.MuiBox-root.muirtl-j0jsvd > p > span.MuiTypography-root.MuiTypography-body1.muirtl-1ztrtr';
+        this.AlzuhriiSelector = '#__next > div > div.MuiBox-root.muirtl-14g4az8 > div > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-md-9.muirtl-1xd5sck > div > div.MuiBox-root.muirtl-pridvr > div:nth-child(3) > div:nth-child(2) > div.MuiBox-root.muirtl-j0jsvd > p > span.MuiTypography-root.MuiTypography-body1.muirtl-e31te7';
         this.searchWithHadithNumbertxt = page.getByRole('textbox', { name: '0' });
         this.hadithNum = page.locator('[id="__next"]');
+        this.searchForNarratorSearchBar = page.getByRole('textbox', { name: 'ابحث عن راوي' });
+        this.narratorName;
+        this.resultName = page.locator('[id="__next"]');
     }
 
     async verifyNumberOfMatchedResultCount() {
@@ -119,11 +122,15 @@ exports.Ahadeeth = class Ahadeeth {
 
 
     async getElementColor(selector) {
-        return await this.page.evaluate((selector) => {
-          const element = document.querySelector(selector);
-          const computedStyle = getComputedStyle(element);
-          return computedStyle.color;
-        }, selector);
+        /* return await (this.page).evaluate((selector) => {
+            const element = document.querySelector(selector);
+            const computedStyle = getComputedStyle(element);
+            return computedStyle.color;
+          }, selector); */
+          return await this.page.$eval(selector, (element) => {
+            const computedStyle = getComputedStyle(element);
+            return computedStyle.color;
+          });
       }
 
 
@@ -153,5 +160,14 @@ exports.Ahadeeth = class Ahadeeth {
         await this.searchWithHadithNumbertxt.fill('7031');
         await this.searchWithHadithNumbertxt.press('Enter');
         expect(this.hadithNum).toContainText('7031');
+    }
+
+    async SearchForNarrator(name){
+        this.narratorName = name
+        this.searchForNarratorSearchBar.click();
+        this.searchForNarratorSearchBar.fill(this.narratorName);
+        await expect(this.resultName).toContainText(this.narratorName);
+        console.log(this.narratorName);
+
     }
 }
